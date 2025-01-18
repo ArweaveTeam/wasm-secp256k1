@@ -56,6 +56,13 @@ endif
 clean:
 	@$(CLEAN_CMD)
 
+# cross platform pwsh
+clean-cp:
+	@pwsh -Command 'if(Test-Path $(OUTPUT_DIR)){Remove-Item -Force -Recurse $(OUTPUT_DIR)}'
+	@pwsh -Command 'if(Test-Path $(NODE_MODULES)){Remove-Item -Force -Recurse $(NODE_MODULES)}'
+	@pwsh -Command 'if(Test-Path $(DOCKER_DIST)){Remove-Item -Force -Recurse $(DOCKER_DIST)}'
+	@pwsh -Command 'if(Test-Path $(ROLLUP_CACHE)){Remove-Item -Force -Recurse $(ROLLUP_CACHE)}'
+
 ################
 # Host Targets #
 ################
