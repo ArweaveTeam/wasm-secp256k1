@@ -30,4 +30,4 @@ jobs:
       - name: Publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: make publish
+        run: npm publish
