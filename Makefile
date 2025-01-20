@@ -53,8 +53,11 @@ else
   endif
 endif
 
+
 clean:
-	@$(CLEAN_CMD)
+	@for dir in $(DIRS_TO_REMOVE); do \
+		rm -rf "$$dir" 2>/dev/null; \
+	done
 
 # cross platform pwsh
 clean-cp:
@@ -100,4 +103,7 @@ build: $(OUTPUT_DIR) $(LIBSECP256K1.JS) $(LIBSECP256K1.WASM) $(LIBSECP256K1.GLUE
 	@bun run build
 
 publish:
+	@npm publish
+
+publish-local: clean build
 	@npm publish
