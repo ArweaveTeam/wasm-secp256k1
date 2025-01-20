@@ -20,6 +20,10 @@ jobs:
       - name: Setup bun
         uses: oven-sh/setup-bun@v1
 
+      - name: Clean
+        shell: pwsh
+        run: make clean-cp
+
       - name: Build
         run: make build
 
