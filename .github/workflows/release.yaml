@@ -20,9 +20,6 @@ jobs:
       - name: Setup bun
         uses: oven-sh/setup-bun@v1
 
-      - name: Clean
-        run: make clean
-
       - name: Build
         run: make build
 
