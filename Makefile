@@ -1,6 +1,5 @@
 define USAGE
 REQUIREMENTS:
-- Powershell Core
 - Docker
 - Bun
 
@@ -37,30 +36,12 @@ sense:
 
 # Define directories to remove
 DIRS_TO_REMOVE = $(OUTPUT_DIR) $(NODE_MODULES) $(DOCKER_DIST) $(ROLLUP_CACHE)
-# Define Unix-like command to remove directories
-UNIX_RM = for dir in $(DIRS_TO_REMOVE); do [ -d "$$dir" ] && rm -rf $$dir; done
-# Define Windows command to remove directories
-WINDOWS_RM = for %%d in ($(DIRS_TO_REMOVE)) do if exist "%%~d" rmdir /s /q "%%~d"
-# For Unix-like systems, use the UNIX_RM command
-ifdef OS
-  SHELL = /bin/bash
-  CLEAN_CMD = $(UNIX_RM)
-else
-  ifeq ($(OS),Windows_NT)
-    # For Windows, use cmd and the WINDOWS_RM command
-    SHELL = cmd
-    CLEAN_CMD = $(WINDOWS_RM)
-  endif
-endif
-
 
 clean:
-	@for dir in $(DIRS_TO_REMOVE); do \
-		rm -rf "$$dir" 2>/dev/null; \
-	done
+	@npx -y rimraf $(DIRS_TO_REMOVE)
 
-# cross platform pwsh
-clean-cp:
+# powershell
+clean-ps:
 	@pwsh -Command 'if(Test-Path $(OUTPUT_DIR)){Remove-Item -Force -Recurse $(OUTPUT_DIR)}'
 	@pwsh -Command 'if(Test-Path $(NODE_MODULES)){Remove-Item -Force -Recurse $(NODE_MODULES)}'
 	@pwsh -Command 'if(Test-Path $(DOCKER_DIST)){Remove-Item -Force -Recurse $(DOCKER_DIST)}'
@@ -99,7 +80,6 @@ build-container:
 	@docker build -f libsecp256k1/Dockerfile . -t $(LIBSECP256K1_BUILDER_TAG)
 
 build: $(OUTPUT_DIR) $(LIBSECP256K1.JS) $(LIBSECP256K1.WASM) $(LIBSECP256K1.GLUE) $(OUTPUT_DIR)/secp256k1.js $(OUTPUT_DIR)/secp256k1.wasm
-	@bun install --frozen-lockfile
 	@bun run build
 
 publish:
