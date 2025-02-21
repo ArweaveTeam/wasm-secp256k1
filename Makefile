@@ -54,10 +54,13 @@ else
 endif
 
 
-clean:
+clean-bash:
 	@for dir in $(DIRS_TO_REMOVE); do \
 		rm -rf "$$dir" 2>/dev/null; \
 	done
+
+clean:
+	@npx -y rimraf $(DIRS_TO_REMOVE)
 
 # cross platform pwsh
 clean-cp:
@@ -99,7 +102,6 @@ build-container:
 	@docker build -f libsecp256k1/Dockerfile . -t $(LIBSECP256K1_BUILDER_TAG)
 
 build: $(OUTPUT_DIR) $(LIBSECP256K1.JS) $(LIBSECP256K1.WASM) $(LIBSECP256K1.GLUE) $(OUTPUT_DIR)/secp256k1.js $(OUTPUT_DIR)/secp256k1.wasm
-	@bun install --frozen-lockfile
 	@bun run build
 
 publish:

@@ -20,9 +20,11 @@ jobs:
       - name: Setup bun
         uses: oven-sh/setup-bun@v1
 
+      - name: Install
+        run: bun install --frozen-lockfile
+
       - name: Clean
-        shell: pwsh
-        run: make clean-cp
+        run: make clean
 
       - name: Build
         run: make build
